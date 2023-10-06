@@ -13,4 +13,3 @@ export const UserPage: NextPage = () => {
     </GenericPageLayout>
   );
 };
-
