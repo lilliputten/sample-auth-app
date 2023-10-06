@@ -1,0 +1,30 @@
+/** @module PageContent.module.scss
+ *  @since 2023.01.27, 16:20
+ *  @changed 2023.02.21, 19:05
+ */
+
+.container {
+  display: flex;
+  align-content: stretch;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.wrapper,
+.DEBUG {
+  /*!KEEP*/
+}
+
+.wrapper {
+  display: flex;
+  &.wrapperCentered {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+  }
+  &.wrapperStretched {
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: stretch;
+  }
+}

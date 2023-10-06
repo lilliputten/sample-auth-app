@@ -1,0 +1,13 @@
+#!/bin/sh
+# @desc Overriding parameters in `config.sh`.
+# @changed 2023.10.06, 17:10
+
+# NOTE: Don't forget to update rules in `publish/.htaccess` and `publish/robots.txt` files if you changed branch from production to demo.
+
+# DIST_BRANCH="publish" # Production build -> html-app-build
+
+DIST_REPO="git@github.com:lilliputten/sample-auth-app.git"
+# SRC_TAG_PREFIX="v" # "v" for default tags like "v.X.Y.Z"
+#
+# PUBLISH_FOLDER="publish" # "$DIST_BRANCH"
+# PUBLISH_TAG_ID="publish" # "$DIST_BRANCH"
