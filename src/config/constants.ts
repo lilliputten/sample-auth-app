@@ -1,9 +1,3 @@
-/** @module config.constants
- *  @description Basic constants
- *  @since 2023.10.06, 17:20
- *  @changed 2023.10.06, 17:20
- */
-
 /** Date conversion & presentation templates... */
 
 // Date/time formats for use in DatePicker and other date/time-related

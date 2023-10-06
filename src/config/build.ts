@@ -1,9 +1,3 @@
-/** @module config.build
- *  @description Build management config
- *  @since 2023.10.06, 17:20
- *  @changed 2023.10.06, 17:20
- */
-
 export const isBrowser = typeof window !== 'undefined'; // NOTE: `!!process.browser` -- tsserver 6385: `browser` is deprecated
 export const isLocalhost = isBrowser && window.location.host.startsWith('localhost');
 

@@ -1,12 +1,6 @@
-/** @module config.app
- *  @since 2023.10.06, 17:20
- *  @changed 2023.10.06, 17:20
- */
-
 import { defaultMuiThemeMode, TMuiThemeMode } from '@/core/types';
 import { isDev } from './build';
 
-// UNUSED!
 export const rootRoute = '/';
 export const visitorRoute = '/visitor';
 

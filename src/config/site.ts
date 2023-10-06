@@ -1,7 +1,3 @@
-/** @module config.site
- *  @since 2023.10.06, 17:20
- *  @changed 2023.10.06, 17:20
- */
 import { defaultLang } from './app';
 
 export const htmlLang = defaultLang;

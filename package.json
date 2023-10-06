@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "timetag": "231006-2318",
   "timestamp": "2023.10.06, 23:18 GMT+7",
-  "changed": "2023.10.06, 17:09",
+  "changed": "2023.10.06, 23:51",
   "private": false,
   "browserslist": [
     ">0.2%",
@@ -123,6 +123,7 @@
     "test": "echo --Run tests-- && jest",
     "storybook": "storybook dev -p 6006 --ci --disable-telemetry",
     "build-storybook": "storybook build --disable-telemetry",
+    "update-browserslist": "echo --Update browsers list for caniuse-- && npx update-browserslist-db@latest",
     "help": "echo --List all available script commands-- && npm-package-user-scripts-list"
   }
 }
