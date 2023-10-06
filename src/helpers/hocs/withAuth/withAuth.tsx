@@ -1,6 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
+import { unauthPage } from '@/config/auth';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TWithAuthProps {
   // router: NextRouter;
@@ -33,7 +35,7 @@ export function withAuth<P extends JSX.IntrinsicAttributes>(
         setAuth(isAuth);
         // TODO: Redirect to root page if not authentificated
         if (!isAuth) {
-          router.push('/');
+          router.push(unauthPage);
         }
       }
     }, [router, setAuth]);
