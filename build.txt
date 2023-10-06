@@ -1,0 +1,6 @@
+Project: sample-auth-app
+Version: 0.0.1
+Branch: dev-231006-basic-auth
+Commit: 4b2ce8c
+Fixed: 2023.10.06, 23:58 GMT+7
+Built: 2023.10.07, 00:06 GMT+7
