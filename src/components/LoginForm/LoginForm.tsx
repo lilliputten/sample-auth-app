@@ -1,6 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // MUI...
 import Box from '@mui/material/Box';
@@ -14,7 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-// import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 
 // MUI Icons...
 import Visibility from '@mui/icons-material/Visibility';
@@ -24,8 +26,7 @@ import { PageTitle, LoaderSplash, ShowError } from '@/ui';
 
 import styles from './LoginForm.module.scss';
 import { TCheckAuthData, useUserAuthStore } from '@/features/UserAuth';
-import { afterAuthPage } from '@/config/auth';
-import { useRouter } from 'next/router';
+import { afterAuthPage, userInfoPage } from '@/config/auth';
 
 type TChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
 type TCheckboxHandler = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
@@ -38,6 +39,9 @@ interface TLoginFormProps {
 const allowToFakeStart = false;
 
 const hasLocalStorage = typeof localStorage !== 'undefined';
+
+const localStorageNameKey = 'LoginForm:userName';
+const localStorageRememberKey = 'LoginForm:doRemember';
 
 const TitleBox: React.FC = () => {
   // prettier-ignore
@@ -54,6 +58,7 @@ const FormBox: React.FC<{
   userName?: string;
   userPassword?: string;
   doRemember?: boolean;
+  isLoggedIn?: boolean;
   onPasswordChange: TChangeHandler;
   onUserNameChange: TChangeHandler;
   onRememeberChanged: TCheckboxHandler;
@@ -62,6 +67,7 @@ const FormBox: React.FC<{
     userName,
     userPassword,
     doRemember,
+    isLoggedIn,
     onPasswordChange,
     onUserNameChange,
     onRememeberChanged,
@@ -73,6 +79,11 @@ const FormBox: React.FC<{
   };
   return (
     <Box className={classnames(styles.contentBox)}>
+      {isLoggedIn && (
+        <Typography mb={2}>
+          You're already logged in. See <Link href={userInfoPage}>your info</Link>.
+        </Typography>
+      )}
       <TextField
         className={styles.userNameField}
         id="userName"
@@ -115,11 +126,6 @@ const FormBox: React.FC<{
         control={<Checkbox checked={doRemember} onChange={onRememeberChanged} />}
         label="Remember Me"
       />
-      {/*
-      <Typography textAlign="left">
-        Some extra info.
-      </Typography>
-      */}
     </Box>
   );
 };
@@ -149,15 +155,16 @@ export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
   const router = useRouter();
   const userAuthStore = useUserAuthStore();
   const {
+    userName: currentUserName,
     error: authUserError,
     isLoading,
-    // isLoggedIn, // TODO: To change behavior if had already logged?
+    isLoggedIn, // TODO: To change behavior if had already logged?
   } = userAuthStore;
   const [showError, setShowError] = React.useState<Error | string>();
   React.useEffect(() => {
     setShowError(authUserError);
   }, [authUserError]);
-  const [userName, setUserName] = React.useState<string>('');
+  const [userName, setUserName] = React.useState<string>(currentUserName || '');
   const [userPassword, setUserPassword] = React.useState('');
   const defaultDoRemember = false;
   const [doRemember, setDoRemember] = React.useState<boolean>(defaultDoRemember);
@@ -166,11 +173,11 @@ export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
   // Update data from local storage...
   React.useEffect(() => {
     if (localStorage) {
-      setUserName(localStorage?.getItem('LoginForm:userName') || '');
-      setDoRemember(localStorage.getItem('LoginForm:doRemember') === 'true' || false);
+      setUserName(currentUserName || localStorage?.getItem(localStorageNameKey) || '');
+      setDoRemember(localStorage.getItem(localStorageRememberKey) === 'true' || false);
     }
     setInited(true);
-  }, []);
+  }, [currentUserName]);
   const onUserNameChange = React.useCallback<TChangeHandler>((ev) => {
     const { currentTarget } = ev;
     const { value } = currentTarget;
@@ -188,14 +195,15 @@ export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
       userPassword,
       doRemember,
     };
-    console.log('[LoginForm:onSubmit]', {
-      checkAuthData,
-      userName,
-      userPassword,
-      doRemember,
-      isSubmitEnabled,
-      // userAuthStore,
-    });
+    /* console.log('[LoginForm:onSubmit]', {
+     *   checkAuthData,
+     *   userName,
+     *   userPassword,
+     *   doRemember,
+     *   isSubmitEnabled,
+     *   // userAuthStore,
+     * });
+     */
     if (!isSubmitEnabled) {
       return;
     }
@@ -203,39 +211,41 @@ export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
       .login(checkAuthData)
       .then((result) => {
         if (!result || !result.isLoggedIn) {
-          console.error('[LoginForm:onSubmit] error', {
-            result,
-            checkAuthData,
-            userName,
-            userPassword,
-            doRemember,
-            isSubmitEnabled,
-            userAuthStore,
-          });
-          debugger;
+          /* console.error('[LoginForm:onSubmit] error', {
+           *   result,
+           *   checkAuthData,
+           *   userName,
+           *   userPassword,
+           *   doRemember,
+           *   isSubmitEnabled,
+           *   userAuthStore,
+           * });
+           * debugger;
+           */
           // Set default error...
           setShowError('Can not log in with provided data');
           return;
         }
-        console.log('[LoginForm:onSubmit] success', {
-          result,
-          checkAuthData,
-          userName,
-          userPassword,
-          doRemember,
-          isSubmitEnabled,
-          userAuthStore,
-        });
+        /* console.log('[LoginForm:onSubmit] success', {
+         *   result,
+         *   checkAuthData,
+         *   userName,
+         *   userPassword,
+         *   doRemember,
+         *   isSubmitEnabled,
+         *   userAuthStore,
+         * });
+         */
         if (hasLocalStorage) {
           // Store or reset storage variables...
           if (doRemember) {
-            localStorage.setItem('LoginForm:userName', userName);
+            localStorage.setItem(localStorageNameKey, userName);
             // localStorage.setItem('LoginForm:userPassword', userPassword);
-            localStorage.setItem('LoginForm:doRemember', String(doRemember));
+            localStorage.setItem(localStorageRememberKey, String(doRemember));
           } else {
-            localStorage.removeItem('LoginForm:userName');
+            localStorage.removeItem(localStorageNameKey);
             // localStorage.removeItem('LoginForm:userPassword');
-            localStorage.removeItem('LoginForm:doRemember');
+            localStorage.removeItem(localStorageRememberKey);
           }
         }
         // Success: Finish...
@@ -250,11 +260,6 @@ export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
   const onRememeberChanged = React.useCallback<TCheckboxHandler>((_ev, checked) => {
     setDoRemember(checked);
   }, []);
-  console.log('[LoginForm] render', {
-    isInited,
-    isFinished,
-    isLoading,
-  });
   return (
     <Stack className={classnames(className, styles.root)}>
       <TitleBox />
@@ -266,6 +271,7 @@ export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
         onUserNameChange={onUserNameChange}
         onPasswordChange={onPasswordChange}
         onRememeberChanged={onRememeberChanged}
+        isLoggedIn={isLoggedIn}
       />
       <ActionsBox onSubmitClick={onSubmit} isSubmitEnabled={isSubmitEnabled} />
       <LoaderSplash

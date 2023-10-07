@@ -12,4 +12,5 @@ export interface TSessionData {
   isLoggedIn: boolean;
   sessionId: TSessionId;
   userName: string;
+  timestamp: number;
 }

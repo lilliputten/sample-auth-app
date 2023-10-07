@@ -21,20 +21,21 @@ export function withAuth<P extends JSX.IntrinsicAttributes>(
     React.useEffect(() => {
       const {
         // prettier-ignore
-        asPath,
-        route,
+        // asPath,
+        // route,
         isReady,
       } = router;
       if (isReady) {
         const { isLoggedIn } = userAuthStore;
         // TODO: Detect real authentification state
-        console.log('[withAuth:WithAuth]', {
-          isLoggedIn,
-          userAuthStore,
-          asPath,
-          route,
-          router,
-        });
+        /* console.log('[withAuth:WithAuth]', {
+         *   isLoggedIn,
+         *   userAuthStore,
+         *   // asPath,
+         *   // route,
+         *   router,
+         * });
+         */
         setAuth(isLoggedIn);
         // TODO: Redirect to root page if has not authentificated
         if (!isLoggedIn) {

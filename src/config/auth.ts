@@ -1,6 +1,14 @@
-// Emulate simple authentification...
-export const loginName = 'aaa';
-export const loginPass = 'bbb';
+// DEMO: Emulate simple authentification...
+export interface TValidLogin {
+  loginName: string;
+  loginPass: string;
+}
+export const validLogins: TValidLogin[] = [
+  { loginName: 'aaa', loginPass: 'bbb' },
+  { loginName: 'xxx', loginPass: 'yyy' },
+];
 
-export const noAuthPage = '/';
-export const afterAuthPage = '/user';
+export const mainPage = '/';
+export const noAuthPage = mainPage;
+export const userInfoPage = '/user';
+export const afterAuthPage = userInfoPage;

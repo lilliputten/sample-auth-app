@@ -1,4 +1,4 @@
-import { loginName, loginPass } from '@/config/auth';
+import { validLogins } from '@/config/auth';
 
 import { longUuidv4 } from '@/helpers';
 import { TSessionData, TCheckAuthData, TSessionId } from './types';
@@ -6,7 +6,15 @@ import { TSessionData, TCheckAuthData, TSessionId } from './types';
 /** Raise an exception or return empty data if authentification failed */
 const raiseExceptionIfAuthFailed = true;
 
-const hasLocalStorage = typeof localStorage !== 'undefined';
+function isValidLogin({ userName, userPassword }): boolean {
+  for (const check of validLogins) {
+    const isLoggedIn = userName === check.loginName && userPassword === check.loginPass;
+    if (isLoggedIn) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
   return new Promise((resolve, reject) => {
@@ -17,7 +25,7 @@ function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
       doRemember,
     } = checkAuthData;
     // Check logged status?
-    const isLoggedIn = userName === loginName && userPassword === loginPass;
+    const isLoggedIn = isValidLogin({ userName, userPassword }); // userName === loginName && userPassword === loginPass;
     // Construct fake session id...
     const sessionId: TSessionId = isLoggedIn ? longUuidv4() : undefined;
     /* console.log('[UserAuthService:demoCheckAuth]', {
@@ -25,19 +33,19 @@ function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
      *   userName,
      *   userPassword,
      *   doRemember,
-     *   loginName,
-     *   loginPass,
      * });
      */
     if (!isLoggedIn) {
+      // eslint-disable-next-line no-console
       console.error('[UserAuthService:demoCheckAuth] failed', {
         isLoggedIn,
         userName,
         userPassword,
         doRemember,
-        loginName,
-        loginPass,
+        validLogins,
       });
+      // eslint-disable-next-line no-debugger
+      debugger;
       if (raiseExceptionIfAuthFailed) {
         // Throw error...
         const error = new Error('Invalid authorization data provided');
@@ -52,6 +60,7 @@ function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
       isLoggedIn,
       sessionId,
       userName: isLoggedIn ? userName : undefined,
+      timestamp: Date.now(),
     };
     resolve(sessionData);
   });

@@ -1,34 +1,21 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // MUI...
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-// import Typography from '@mui/material/Typography';
-
-// MUI Icons...
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Typography from '@mui/material/Typography';
 
 import { PageTitle, LoaderSplash, ShowError } from '@/ui';
 
 import styles from './UserForm.module.scss';
-import { TCheckAuthData, useUserAuthStore } from '@/features/UserAuth';
-import { afterAuthPage, noAuthPage } from '@/config/auth';
-import { useRouter } from 'next/router';
+import { useUserAuthStore } from '@/features/UserAuth';
+import { mainPage, noAuthPage } from '@/config/auth';
 
-type TChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
-type TCheckboxHandler = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 type TClickHandler = () => void;
 
 interface TUserFormProps {
@@ -70,7 +57,7 @@ const ActionsBox: React.FC<{
         onClick={onLogoutClick}
         disabled={!isLogoutEnabled}
         variant="contained"
-        fullWidth
+        // fullWidth
       >
         Log Out
       </Button>
@@ -95,15 +82,14 @@ export const UserForm: React.FC<TUserFormProps> = observer((props) => {
     setInited(true);
   }, []);
   const onLogout = React.useCallback(() => {
-    console.log('[UserForm:onLogout]');
-    debugger;
     userAuthStore
       .logout()
-      .then((result) => {
-        console.log('[UserForm:onLogout] success', {
-          result,
-          userAuthStore,
-        });
+      .then((_result) => {
+        /* console.log('[UserForm:onLogout] success', {
+         *   _result,
+         *   userAuthStore,
+         * });
+         */
         // Success: Finish...
         setFinished(true);
         setShowError(undefined);
@@ -118,6 +104,9 @@ export const UserForm: React.FC<TUserFormProps> = observer((props) => {
       <TitleBox />
       {showError && <ShowError className={styles.error} error={showError} />}
       <FormBox userName={userName} />
+      <Typography mb={2}>
+        Go to <Link href={mainPage}>main page</Link>.
+      </Typography>
       <ActionsBox onLogoutClick={onLogout} isLogoutEnabled />
       <LoaderSplash
         // className={styles.loaderSplash}
