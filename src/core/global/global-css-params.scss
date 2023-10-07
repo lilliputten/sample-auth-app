@@ -15,7 +15,12 @@ $defaultTextColor: #000;
 $defaultLinkColor: #003d9d;
 $neutralColor: #888;
 
-$primaryMuiColors: ( "light": "#1f8eff", "main": "#005bb8", "dark": "#002952", "contrastText": "#ffffff" );
+$primaryMuiColors: (
+  'light': '#1f8eff',
+  'main': '#005bb8',
+  'dark': '#002952',
+  'contrastText': '#ffffff',
+);
 $primaryMuiColorsLight: #1f8eff;
 $primaryMuiColorsMain: #005bb8;
 $primaryMuiColorsDark: #002952;
@@ -26,7 +31,14 @@ $bodyBgColor: #f5f5f5;
 $themeControlsRadius: 8;
 $themeControlsRadiusPx: 8px;
 
-$breakpoints: ( "base": 360, "sm": 512, "md": 768, "lg": 1024, "xl": 1280, "2xl": 1600 );
+$breakpoints: (
+  'base': 360,
+  'sm': 512,
+  'md': 768,
+  'lg': 1024,
+  'xl': 1280,
+  '2xl': 1600,
+);
 $breakpointsBase: 360;
 $breakpointsBasePx: 360px;
 $breakpointsSm: 512;
@@ -39,7 +51,14 @@ $breakpointsXl: 1280;
 $breakpointsXlPx: 1280px;
 $breakpoints2xl: 1600;
 $breakpoints2xlPx: 1600px;
-$breakpointsPre: ( "base": 359.98, "sm": 511.98, "md": 767.98, "lg": 1023.98, "xl": 1279.98, "2xl": 1599.98 );
+$breakpointsPre: (
+  'base': 359.98,
+  'sm': 511.98,
+  'md': 767.98,
+  'lg': 1023.98,
+  'xl': 1279.98,
+  '2xl': 1599.98,
+);
 $breakpointsPreBase: 359.98;
 $breakpointsPreBasePx: 359.98px;
 $breakpointsPreSm: 511.98;
@@ -52,14 +71,28 @@ $breakpointsPreXl: 1279.98;
 $breakpointsPreXlPx: 1279.98px;
 $breakpointsPre2xl: 1599.98;
 $breakpointsPre2xlPx: 1599.98px;
-$breakpointsPx: ( "base": "360px", "sm": "512px", "md": "768px", "lg": "1024px", "xl": "1280px", "2xl": "1600px" );
+$breakpointsPx: (
+  'base': '360px',
+  'sm': '512px',
+  'md': '768px',
+  'lg': '1024px',
+  'xl': '1280px',
+  '2xl': '1600px',
+);
 $breakpointsPxBase: 360px;
 $breakpointsPxSm: 512px;
 $breakpointsPxMd: 768px;
 $breakpointsPxLg: 1024px;
 $breakpointsPxXl: 1280px;
 $breakpointsPx2xl: 1600px;
-$breakpointsPrePx: ( "base": "359.98px", "sm": "511.98px", "md": "767.98px", "lg": "1023.98px", "xl": "1279.98px", "2xl": "1599.98px" );
+$breakpointsPrePx: (
+  'base': '359.98px',
+  'sm': '511.98px',
+  'md': '767.98px',
+  'lg': '1023.98px',
+  'xl': '1279.98px',
+  '2xl': '1599.98px',
+);
 $breakpointsPrePxBase: 359.98px;
 $breakpointsPrePxSm: 511.98px;
 $breakpointsPrePxMd: 767.98px;
@@ -85,4 +118,3 @@ $animationTime: 500;
 $animationTimeMs: 500ms;
 $disappearTime: 1000;
 $disappearTimeMs: 1000ms;
-

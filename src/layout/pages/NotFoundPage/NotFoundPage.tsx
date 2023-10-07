@@ -9,7 +9,7 @@ export const NotFoundPage: NextPage = () => {
   const pageTitle = siteConfig.notFoundTitle;
   const title = subPageTitle(pageTitle);
   return (
-    <GenericPageLayout title={title}>
+    <GenericPageLayout title={title} pageContentProps={{ centered: true }}>
       <NotFoundSection />
     </GenericPageLayout>
   );
