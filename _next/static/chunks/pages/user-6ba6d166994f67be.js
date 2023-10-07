@@ -1,2 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[235],{6578:function(n,u,t){"use strict";t.r(u);var _=t(2921),e=t(7207),r=t(5893);u.default=(0,e.QO)(function(){return(0,r.jsx)(_.Y,{})})},1093:function(n,u,t){(window.__NEXT_P=window.__NEXT_P||[]).push(["/user",function(){return t(6578)}])}},function(n){n.O(0,[165,2,774,888,179],function(){return n(n.s=1093)}),_N_E=n.O()}]);
-//# sourceMappingURL=user-6ba6d166994f67be.js.map
