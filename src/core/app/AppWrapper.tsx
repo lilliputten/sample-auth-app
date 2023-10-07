@@ -13,8 +13,8 @@ export function AppWrapper(props: AppWrapperProps): JSX.Element {
   return (
     <>
       <UserAuthStoreProvider>
-      {/* TODO: Expose root control nodes or use custom hooks? */}
-      {children}
+        {/* TODO: Expose root control nodes or use custom hooks? */}
+        {children}
       </UserAuthStoreProvider>
     </>
   );

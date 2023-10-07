@@ -3,9 +3,11 @@ import { loginName, loginPass } from '@/config/auth';
 import { longUuidv4 } from '@/helpers';
 import { TSessionData, TCheckAuthData, TSessionId } from './types';
 
+/** Raise an exception or return empty data if authentification failed */
+const raiseExceptionIfAuthFailed = true;
+
 function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
-  return new Promise((resolve, _reject) => {
-    // const resolveFalseIfFailed = true;
+  return new Promise((resolve, reject) => {
     const {
       // prettier-ignore
       userName,
@@ -16,14 +18,34 @@ function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
     const isLoggedIn = userName === loginName && userPassword === loginPass;
     // Construct fake session id...
     const sessionId: TSessionId = isLoggedIn ? longUuidv4() : undefined;
-    console.log('[UserAuthService:demoCheckAuth]', {
-      isLoggedIn,
-      userName,
-      userPassword,
-      doRemember,
-      loginName,
-      loginPass,
-    });
+    /* console.log('[UserAuthService:demoCheckAuth]', {
+     *   isLoggedIn,
+     *   userName,
+     *   userPassword,
+     *   doRemember,
+     *   loginName,
+     *   loginPass,
+     * });
+     */
+    if (!isLoggedIn) {
+      console.error('[UserAuthService:demoCheckAuth] failed', {
+        isLoggedIn,
+        userName,
+        userPassword,
+        doRemember,
+        loginName,
+        loginPass,
+      });
+      if (raiseExceptionIfAuthFailed) {
+        // Throw error...
+        const error = new Error('Invalid authorization data provided');
+        reject(error);
+      } else {
+        // Else resolve empty data...
+        resolve(undefined);
+      }
+    }
+    // Resolve full auth data...
     const sessionData: TSessionData = {
       isLoggedIn,
       sessionId,
@@ -44,19 +66,22 @@ export class UserAuthService {
   }
 
   checkAuthSession(checkAuthData: TCheckAuthData): Promise<TSessionData> {
-    const {
-      // prettier-ignore
-      userName,
-      userPassword,
-      doRemember,
-    } = checkAuthData;
-    console.log('[UserAuthService:checkAuthSession] Start checkin user auth data', {
-      userName,
-      userPassword,
-      doRemember,
-    });
+    /* // DEBUG
+     * const {
+     *   // prettier-ignore
+     *   userName,
+     *   userPassword,
+     *   doRemember,
+     * } = checkAuthData;
+     * console.log('[UserAuthService:checkAuthSession] Start checking user auth data', {
+     *   userName,
+     *   userPassword,
+     *   doRemember,
+     *   checkAuthData,
+     * });
+     */
     return new Promise((resolve, reject) => {
-      /* // TODO: Use server api
+      /* // TODO: DEMO: Use server api
        * const url; // TODO: Get url from config
        * axios
        *   .post<TSessionData>(url, {
@@ -78,11 +103,11 @@ export class UserAuthService {
       // DEMO: Use fake auth checker (temporarily)...
       demoCheckAuth(checkAuthData)
         .then((sessionData) => {
-          console.log('[UserAuthService:checkAuthSession] Got user auth data', {
-            sessionData,
-            checkAuthData,
-          });
-          debugger;
+          /* console.log('[UserAuthService:checkAuthSession] Got user auth data', {
+           *   sessionData,
+           *   checkAuthData,
+           * });
+           */
           resolve(sessionData);
         })
         .catch(reject);

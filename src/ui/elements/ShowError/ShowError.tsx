@@ -7,10 +7,11 @@ import { errorToString } from '@/helpers';
 
 import styles from './ShowError.module.scss';
 
-export const ShowError: React.FC<{ error: Error | string } & PropsWithClassName> = (props) => {
-  const { error, className } = props;
-  const title = 'Error';
-  const errorText = errorToString(error);
+export const ShowError: React.FC<
+  { title?: string; error?: Error | string } & PropsWithClassName
+> = (props) => {
+  const { title = 'Error', error, className } = props;
+  const errorText = error ? errorToString(error) : undefined;
   return (
     <Typography className={classnames(className, styles.root)}>
       <span className={styles.title}>{title}:</span>{' '}

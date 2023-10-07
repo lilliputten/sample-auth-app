@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import classnames from 'classnames';
 
 // MUI...
@@ -19,9 +20,12 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { PageTitle } from '@/ui/elements/Basic/PageTitle';
+import { PageTitle, LoaderSplash, ShowError } from '@/ui';
 
 import styles from './LoginForm.module.scss';
+import { TCheckAuthData, useUserAuthStore } from '@/features/UserAuth';
+import { afterAuthPage } from '@/config/auth';
+import { useRouter } from 'next/router';
 
 type TChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
 type TCheckboxHandler = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
@@ -113,7 +117,7 @@ const FormBox: React.FC<{
       />
       {/*
       <Typography textAlign="left">
-        By clicking "Join", you agree to our Terms of Services and Privacy Statement.
+        Some extra info.
       </Typography>
       */}
     </Box>
@@ -140,15 +144,33 @@ const ActionsBox: React.FC<{
   );
 };
 
-export const LoginForm: React.FC<TCasterLoginProps> = (props) => {
+export const LoginForm: React.FC<TCasterLoginProps> = observer((props) => {
   const { className } = props;
-  const [userName, setUserName] = React.useState(
-    (hasLocalStorage && localStorage.getItem('LoginForm:userName')) || '',
-  );
+  const router = useRouter();
+  const userAuthStore = useUserAuthStore();
+  const {
+    error: authUserError,
+    isLoading,
+    // isLoggedIn, // TODO: To change behavior if had already logged?
+  } = userAuthStore;
+  const [showError, setShowError] = React.useState<Error | string>();
+  React.useEffect(() => {
+    setShowError(authUserError);
+  }, [authUserError]);
+  const [userName, setUserName] = React.useState<string>('');
   const [userPassword, setUserPassword] = React.useState('');
-  const [doRemember, setDoRemember] = React.useState(
-    (hasLocalStorage && localStorage.getItem('LoginForm:doRemember') === 'true') || false,
-  );
+  const defaultDoRemember = false;
+  const [doRemember, setDoRemember] = React.useState<boolean>(defaultDoRemember);
+  const [isInited, setInited] = React.useState<boolean>(false);
+  const [isFinished, setFinished] = React.useState<boolean>(false);
+  // Update data from local storage...
+  React.useEffect(() => {
+    if (localStorage) {
+      setUserName(localStorage?.getItem('LoginForm:userName') || '');
+      setDoRemember(localStorage.getItem('LoginForm:doRemember') === 'true' || false);
+    }
+    setInited(true);
+  }, []);
   const onUserNameChange = React.useCallback<TChangeHandler>((ev) => {
     const { currentTarget } = ev;
     const { value } = currentTarget;
@@ -161,44 +183,77 @@ export const LoginForm: React.FC<TCasterLoginProps> = (props) => {
   }, []);
   const isSubmitEnabled = allowToFakeStart || !!(userName && userPassword);
   const onSubmit = React.useCallback(() => {
-    console.log('[LoginForm:onSubmit]', {
+    const checkAuthData: TCheckAuthData = {
       userName,
+      userPassword,
+      doRemember,
+    };
+    console.log('[LoginForm:onSubmit]', {
+      checkAuthData,
+      userName,
+      userPassword,
       doRemember,
       isSubmitEnabled,
+      // userAuthStore,
     });
-    debugger;
     if (!isSubmitEnabled) {
       return;
     }
-    // TODO: Set userId, userName, userLogged
-    // DEMO: Prepare fake userId!
-    /*
-    const userId: UUID = longUuidv4();
-    // TODO: Check password on server (async)!
-    // Set app parameters...
-    appStore.setUserLogged(true);
-    appStore.setUserId(userId);
-    appStore.setUserName(userName);
-    if (hasLocalStorage) {
-      // Store or reset storage variables...
-      if (doRemember) {
-        localStorage.setItem('LoginForm:userName', userName);
-        // localStorage.setItem('LoginForm:userPassword', userPassword);
-        localStorage.setItem('LoginForm:doRemember', String(doRemember));
-      } else {
-        localStorage.removeItem('LoginForm:userName');
-        // localStorage.removeItem('LoginForm:userPassword');
-        localStorage.removeItem('LoginForm:doRemember');
-      }
-    }
-    */
-  }, [userName, doRemember, isSubmitEnabled]);
+    userAuthStore
+      .login(checkAuthData)
+      .then((result) => {
+        if (!result || !result.isLoggedIn) {
+          console.error('[LoginForm:onSubmit] error', {
+            result,
+            checkAuthData,
+            userName,
+            userPassword,
+            doRemember,
+            isSubmitEnabled,
+            userAuthStore,
+          });
+          debugger;
+          // Set default error...
+          setShowError('Can not log in with provided data');
+          return;
+        }
+        console.log('[LoginForm:onSubmit] success', {
+          result,
+          checkAuthData,
+          userName,
+          userPassword,
+          doRemember,
+          isSubmitEnabled,
+          userAuthStore,
+        });
+        if (hasLocalStorage) {
+          // Store or reset storage variables...
+          if (doRemember) {
+            localStorage.setItem('LoginForm:userName', userName);
+            // localStorage.setItem('LoginForm:userPassword', userPassword);
+            localStorage.setItem('LoginForm:doRemember', String(doRemember));
+          } else {
+            localStorage.removeItem('LoginForm:userName');
+            // localStorage.removeItem('LoginForm:userPassword');
+            localStorage.removeItem('LoginForm:doRemember');
+          }
+        }
+        // Success: Finish...
+        setFinished(true);
+        setShowError(undefined);
+        // TODO: Redirect to afterAuthPage
+        router.push(afterAuthPage);
+      })
+      // Catch with empty handler -- calm the react for non-processing errors.
+      .catch(Boolean);
+  }, [router, userAuthStore, userName, userPassword, doRemember, isSubmitEnabled]);
   const onRememeberChanged = React.useCallback<TCheckboxHandler>((_ev, checked) => {
     setDoRemember(checked);
   }, []);
   return (
     <Stack className={classnames(className, styles.root)}>
       <TitleBox />
+      {showError && <ShowError className={styles.error} error={showError} />}
       <FormBox
         userName={userName}
         userPassword={userPassword}
@@ -208,6 +263,14 @@ export const LoginForm: React.FC<TCasterLoginProps> = (props) => {
         onRememeberChanged={onRememeberChanged}
       />
       <ActionsBox onSubmitClick={onSubmit} isSubmitEnabled={isSubmitEnabled} />
+      <LoaderSplash
+        // className={styles.loaderSplash}
+        show={!isInited || isFinished || isLoading}
+        spinnerSize="large"
+        bg="white"
+        mode="cover"
+        fullSize
+      />
     </Stack>
   );
-};
+});

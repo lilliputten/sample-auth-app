@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 
 import * as siteConfig from '@/config/site';
 import { subPageTitle } from '@/helpers';
-import { GenericPageLayout } from '@/layout';
+import { GenericPageLayout } from '@/layout/structure';
 import { NotFoundSection } from '@/components';
 
 export const NotFoundPage: NextPage = () => {

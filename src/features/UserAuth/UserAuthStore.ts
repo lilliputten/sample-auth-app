@@ -91,6 +91,8 @@ export class UserAuthStore {
         debugger; // eslint-disable-line no-debugger
         this.clearAuthData();
         this.setError(error);
+        // Re-throw error for containing components (use extra `.catch()` to calm react)...
+        throw error;
       })
       .finally(() => {
         // Clear promise...
@@ -134,7 +136,7 @@ export class UserAuthStore {
         return sessionData;
       })
       .catch((err) => {
-        const errMessage = 'Loading user auth data failed';
+        const errMessage = 'Aurhorization failed';
         // TODO: Make error with original & translated messages...
         const error = new Error(derivedErrorMessage(errMessage, err));
         console.error('[UserAuthStore:login:promise]', errMessage, {
@@ -144,6 +146,8 @@ export class UserAuthStore {
         debugger; // eslint-disable-line no-debugger
         this.clearAuthData();
         this.setError(error);
+        // Re-throw error for containing components (use extra `.catch()` to calm react)...
+        throw error;
       })
       .finally(() => {
         // Clear promise...

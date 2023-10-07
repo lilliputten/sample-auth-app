@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   transition: opacity $animationTimeMs;
+  z-index: 10;
   &.mode_cover {
     position: absolute;
     left: 0;

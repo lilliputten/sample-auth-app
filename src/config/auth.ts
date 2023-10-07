@@ -2,4 +2,5 @@
 export const loginName = 'aaa';
 export const loginPass = 'bbb';
 
-export const unauthPage = '/';
+export const noAuthPage = '/';
+export const afterAuthPage = '/user';
