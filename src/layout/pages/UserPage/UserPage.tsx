@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import Box from '@mui/material/Box';
 
 import { subPageTitle } from '@/helpers';
 import { GenericPageLayout } from '@/layout';
@@ -9,7 +10,7 @@ export const UserPage: NextPage = () => {
   return (
     <GenericPageLayout title={title}>
       {/* TODO: Import common page sith logon form */}
-      UserPage
+      <Box>UserPage</Box>
     </GenericPageLayout>
   );
 };

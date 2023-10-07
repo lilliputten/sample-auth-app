@@ -1,7 +1,7 @@
 /** @module next-project-params
  *  @desc Create project environment params. They can be accessed as `process.env.*` in source code.
- *  @since 2023.01.26, 18:09
- *  @changed 2023.02.21, 00:38
+ *  @since 2023.10.07, 15:12
+ *  @changed 2023.10.07, 15:12
  */
 
 const path = require('path');

@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 /** @module next.config
  *  @desc NextJS core config
- *  @since 2023.10.06, 17:16
- *  @changed 2023.10.06, 17:16
+ *  @since 2023.10.07, 15:12
+ *  @changed 2023.10.07, 15:12
  */
 
 const path = require('path');
@@ -104,8 +104,10 @@ const nextConfig = {
     prependData: [
       '@use "sass:math";',
       '@use "sass:color";',
-      // Global parameters...
-      '@import "' + cssParams.generatedCssParamsScssFilename + '";',
+      /* // UNUSED: Global parameters...
+       * '@import "' + cssParams.generatedCssParamsScssFilename + '";',
+       */
+      '@import "global-css-params.scss";',
       // Global mixins...
       '@import "global-mixins.scss";',
     ].join(' '),
