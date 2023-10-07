@@ -59,4 +59,7 @@ Builds published into the `publish` branch. See utilities configuration in `util
 
 ## Deploy server
 
-TODO: To maintain demo stand.
+Actual publish branch is automatically deplolying to the server:
+
+https://sample-auth-app.lilliputten.ru/
+

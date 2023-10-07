@@ -4,6 +4,7 @@ import bound from 'bind-decorator';
 import { TCheckAuthData, TSessionData, TSessionId } from './types';
 import { UserAuthService } from './UserAuthService';
 import { derivedErrorMessage } from '@/helpers';
+import { showError, showSuccess } from '@/ui';
 
 const hasLocalStorage = typeof localStorage !== 'undefined';
 
@@ -74,40 +75,6 @@ export class UserAuthStore {
     return !!(this.checkAuthPromise || this.resetAuthPromise);
   }
 
-  @bound logout(): Promise<void> {
-    if (this.resetAuthPromise) {
-      return this.resetAuthPromise;
-    }
-    // console.log('[UserAuthStore:logout]');
-    const resetAuthPromise = this.userAuthService
-      .resetAuthSession()
-      .then(() => {
-        // console.log('[UserAuthStore:logout:promise] success');
-        this.clearAuthData();
-        this.setError(undefined);
-      })
-      .catch((err) => {
-        const errMessage = 'Logging out failed';
-        // TODO: Make error with original & translated messages...
-        const error = new Error(derivedErrorMessage(errMessage, err));
-        // eslint-disable-next-line no-console
-        console.error('[UserAuthStore:logout:promise]', errMessage, {
-          error,
-        });
-        debugger; // eslint-disable-line no-debugger
-        this.clearAuthData();
-        this.setError(error);
-        // Re-throw error for containing components (use extra `.catch()` to calm react)...
-        throw error;
-      })
-      .finally(() => {
-        // Clear promise...
-        this.setResetAuthPromise(undefined);
-      });
-    this.setResetAuthPromise(resetAuthPromise);
-    return resetAuthPromise;
-  }
-
   storeSessionToLocalStorage(sessionData: TSessionData) {
     if (hasLocalStorage) {
       localStorage.setItem(localStorageSessionKey, JSON.stringify(sessionData));
@@ -146,6 +113,42 @@ export class UserAuthStore {
     if (hasLocalStorage) {
       localStorage.removeItem(localStorageSessionKey);
     }
+  }
+
+  @bound logout(): Promise<void> {
+    if (this.resetAuthPromise) {
+      return this.resetAuthPromise;
+    }
+    // console.log('[UserAuthStore:logout]');
+    const resetAuthPromise = this.userAuthService
+      .resetAuthSession()
+      .then(() => {
+        showSuccess("You're already logged out");
+        // console.log('[UserAuthStore:logout:promise] success');
+        this.clearAuthData();
+        this.setError(undefined);
+      })
+      .catch((err) => {
+        const errMessage = 'Logging out failed';
+        // TODO: Make error with original & translated messages...
+        const error = new Error(derivedErrorMessage(errMessage, err));
+        // eslint-disable-next-line no-console
+        console.error('[UserAuthStore:logout:promise]', errMessage, {
+          error,
+        });
+        debugger; // eslint-disable-line no-debugger
+        this.clearAuthData();
+        this.setError(error);
+        showError(errMessage);
+        // Re-throw error for containing components (use extra `.catch()` to calm react)...
+        throw error;
+      })
+      .finally(() => {
+        // Clear promise...
+        this.setResetAuthPromise(undefined);
+      });
+    this.setResetAuthPromise(resetAuthPromise);
+    return resetAuthPromise;
   }
 
   @bound login(userAuthData: TCheckAuthData): Promise<TSessionData | void> {
@@ -190,6 +193,7 @@ export class UserAuthStore {
           this.error = undefined;
         });
         this.setUserAuthData(sessionId);
+        showSuccess("You're already logged in");
         return sessionData;
       })
       .catch((err) => {
@@ -205,6 +209,7 @@ export class UserAuthStore {
         this.clearSessionToLocalStorage();
         this.clearAuthData();
         this.setError(error);
+        showError(errMessage);
         // Re-throw error for containing components (use extra `.catch()` to calm react)...
         throw error;
       })
