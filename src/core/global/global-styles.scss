@@ -1,6 +1,6 @@
 /** @module styles.less
- *  @since 2023.01.27, 13:36
- *  @changed 2023.03.31, 19:00
+ *  @since 2023.10.07, 15:41
+ *  @changed 2023.10.07, 15:41
  */
 
 // Import locally installed font (instead link external cdn url, defined in `src/config/site.ts`).
@@ -27,26 +27,8 @@ body {
   @include expandableFullSizeContainer;
   overflow: hidden; // NOTE: No scroll (for flex-structured layouts)!
   &.app-mode-demo {
+    // DEMO: Demo mode.
     $demoColor: color.change(yellow, $alpha: 0.5);
     border: 5px solid $demoColor;
-  }
-}
-
-// TODO: Move to mui-theme?
-a {
-  color: $defaultLinkColor;
-  text-decoration: none;
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-// Fix MUI buttons (TODO: Incaplulate to our own Button component?)
-button.FixMuiButton {
-  // TODO: To fix it with MUI tools?
-  > .Text {
-    $shift: 2px;
-    margin-top: $shift;
-    margin-bottom: -$shift;
   }
 }

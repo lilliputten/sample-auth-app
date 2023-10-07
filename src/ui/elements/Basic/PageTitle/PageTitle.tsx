@@ -15,7 +15,7 @@ export const PageTitle: React.FC<PropsWithChildrenAndClassName> = (props) => {
       variant="h2"
       fontWeight="600"
       color="#333"
-      mb={3}
+      mb={1}
     >
       {children}
     </Typography>

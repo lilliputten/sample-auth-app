@@ -10,7 +10,7 @@ import { Panel } from '@/layout/structure/Panel';
 
 import styles from './PageContent.module.scss';
 
-interface TPageContentProps {
+export interface TPageContentProps {
   className?: string;
   children?: React.ReactNode;
   centered?: boolean;
