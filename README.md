@@ -5,8 +5,8 @@
 
 # sample-auth-app
 
-- Version: 0.0.1
-- Last changes timestamp: 2023.10.06, 23:58 GMT+7
+- Version: 0.0.2
+- Last changes timestamp: 2023.10.07, 20:50 GMT+7
 
 ## See also
 
@@ -16,6 +16,7 @@
 ## Client & server
 
 - Repository: https://github.com/lilliputten/sample-auth-app
+- Demo server (with recent build published): https://sample-auth-app.lilliputten.ru/
 
 ## Install
 

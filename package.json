@@ -2,9 +2,9 @@
   "name": "sample-auth-app",
   "author": "lilliputten@gmail.com",
   "license": "MIT",
-  "version": "0.0.1",
-  "timetag": "231006-2358",
-  "timestamp": "2023.10.06, 23:58 GMT+7",
+  "version": "0.0.2",
+  "timetag": "231007-2050",
+  "timestamp": "2023.10.07, 20:50 GMT+7",
   "changed": "2023.10.06, 23:51",
   "private": false,
   "browserslist": [
