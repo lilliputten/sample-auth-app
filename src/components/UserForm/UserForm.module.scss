@@ -1,0 +1,39 @@
+.root,
+.error,
+.contentBox,
+.titleBox,
+.title,
+.actionsBox,
+.submitButton,
+.userNameField,
+.passwordField,
+.remember,
+.DEBUG {
+  /*!KEEP*/
+}
+
+.root {
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  text-align: center;
+  gap: 24px;
+  width: 100%;
+  $tresholdWidth: 500px;
+  @media (min-width: calc($tresholdWidth + $blockPaddingPx * 2)) {
+    width: $tresholdWidth;
+  }
+}
+
+.contentBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+  // border-radius: 12px;
+  // overflow: hidden;
+  position: relative;
+  gap: 12px;
+}

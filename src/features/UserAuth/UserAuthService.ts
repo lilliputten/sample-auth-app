@@ -6,6 +6,8 @@ import { TSessionData, TCheckAuthData, TSessionId } from './types';
 /** Raise an exception or return empty data if authentification failed */
 const raiseExceptionIfAuthFailed = true;
 
+const hasLocalStorage = typeof localStorage !== 'undefined';
+
 function demoCheckAuth(checkAuthData: TCheckAuthData): Promise<TSessionData> {
   return new Promise((resolve, reject) => {
     const {
@@ -66,20 +68,6 @@ export class UserAuthService {
   }
 
   checkAuthSession(checkAuthData: TCheckAuthData): Promise<TSessionData> {
-    /* // DEBUG
-     * const {
-     *   // prettier-ignore
-     *   userName,
-     *   userPassword,
-     *   doRemember,
-     * } = checkAuthData;
-     * console.log('[UserAuthService:checkAuthSession] Start checking user auth data', {
-     *   userName,
-     *   userPassword,
-     *   doRemember,
-     *   checkAuthData,
-     * });
-     */
     return new Promise((resolve, reject) => {
       /* // TODO: DEMO: Use server api
        * const url; // TODO: Get url from config

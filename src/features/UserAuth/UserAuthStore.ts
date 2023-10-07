@@ -73,11 +73,11 @@ export class UserAuthStore {
     if (this.resetAuthPromise) {
       return this.resetAuthPromise;
     }
-    console.log('[UserAuthStore:logout]');
+    // console.log('[UserAuthStore:logout]');
     const resetAuthPromise = this.userAuthService
       .resetAuthSession()
       .then(() => {
-        console.log('[UserAuthStore:logout:promise] success');
+        // console.log('[UserAuthStore:logout:promise] success');
         this.clearAuthData();
         this.setError(undefined);
       })
@@ -96,7 +96,7 @@ export class UserAuthStore {
       })
       .finally(() => {
         // Clear promise...
-        this.setCheckAuthPromise(undefined);
+        this.setResetAuthPromise(undefined);
       });
     this.setResetAuthPromise(resetAuthPromise);
     return resetAuthPromise;

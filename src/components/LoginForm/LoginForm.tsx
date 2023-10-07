@@ -31,7 +31,7 @@ type TChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
 type TCheckboxHandler = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 type TClickHandler = () => void;
 
-interface TCasterLoginProps {
+interface TLoginFormProps {
   className?: string;
 }
 
@@ -144,7 +144,7 @@ const ActionsBox: React.FC<{
   );
 };
 
-export const LoginForm: React.FC<TCasterLoginProps> = observer((props) => {
+export const LoginForm: React.FC<TLoginFormProps> = observer((props) => {
   const { className } = props;
   const router = useRouter();
   const userAuthStore = useUserAuthStore();
@@ -241,7 +241,7 @@ export const LoginForm: React.FC<TCasterLoginProps> = observer((props) => {
         // Success: Finish...
         setFinished(true);
         setShowError(undefined);
-        // TODO: Redirect to afterAuthPage
+        // TODO: Move to UserAuthStore
         router.push(afterAuthPage);
       })
       // Catch with empty handler -- calm the react for non-processing errors.
@@ -250,6 +250,11 @@ export const LoginForm: React.FC<TCasterLoginProps> = observer((props) => {
   const onRememeberChanged = React.useCallback<TCheckboxHandler>((_ev, checked) => {
     setDoRemember(checked);
   }, []);
+  console.log('[LoginForm] render', {
+    isInited,
+    isFinished,
+    isLoading,
+  });
   return (
     <Stack className={classnames(className, styles.root)}>
       <TitleBox />
