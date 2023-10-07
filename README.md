@@ -62,4 +62,3 @@ Builds published into the `publish` branch. See utilities configuration in `util
 Actual publish branch is automatically deplolying to the server:
 
 https://sample-auth-app.lilliputten.ru/
-
