@@ -1,4 +1,5 @@
 import React from 'react';
+// import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 import { WithToastsWrapper } from '@/ui';
 import { UserAuthStoreProvider } from '@/features/UserAuth';
@@ -12,10 +13,12 @@ export function AppWrapper(props: AppWrapperProps): JSX.Element {
   return (
     <>
       <WithToastsWrapper>
+        {/* <UserProvider> */}
         <UserAuthStoreProvider>
           {/* TODO: Expose root control nodes or use custom hooks? */}
           {children}
         </UserAuthStoreProvider>
+        {/* </UserProvider> */}
       </WithToastsWrapper>
     </>
   );

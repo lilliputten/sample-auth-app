@@ -126,6 +126,9 @@ const FormBox: React.FC<{
         control={<Checkbox checked={doRemember} onChange={onRememeberChanged} />}
         label="Remember Me"
       />
+      <Typography>
+        Login with <Link href="/api/auth/login">OAuth</Link>.
+      </Typography>
     </Box>
   );
 };

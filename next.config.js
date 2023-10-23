@@ -32,6 +32,11 @@ const useLints = false;
 const useMinifiedAssets = true;
 
 const nextConfig = {
+  experimental: {
+    /* // @see: https://nextjs.org/docs/messages/experimental-app-dir-config
+     * appDir: true,
+     */
+  },
   async rewrites() {
     return [
       // @see: https://nextjs.org/docs/pages/api-reference/next-config-js/rewrites

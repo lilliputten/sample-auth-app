@@ -46,4 +46,8 @@ const envParams = {
 };
 // console.log('Environment parameters:', envParams);
 
+Object.keys(envParams).forEach((key) => {
+  envParams[key] = String(envParams[key]);
+});
+
 module.exports = envParams;
